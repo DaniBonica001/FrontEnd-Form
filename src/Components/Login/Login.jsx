@@ -5,10 +5,13 @@ import axios from "axios";
 import Styles from './Login.module.css'
 import user_icon from '../../assets/usuario.png'
 import pass_icon from '../../assets/bloquear.png'
+import { useState } from "react";
 
 const baseUrl = import.meta.env.VITE_CONNECCTION_STRING;
 
 function Login() {
+    
+    const [error,setError]=useState(false)
 
     const {register, handleSubmit,reset} = useForm({
         defaultValues:{
@@ -17,13 +20,33 @@ function Login() {
         }
     })
 
+    function handleError(){
+        setError((error)=> !error)
+    }
 
-    const onSubmit = async (event)=>{
+    const handleInputChange = () => {
+        // Elimina la clase de error cuando el usuario comienza a escribir
+        if (error) {
+            setError(false);
+        }
+    }
+
+    const fieldValidation = (event) =>{
+        if (event.username == '' || event.password == ''){
+            handleError()
+        }else{
+            
+            onSubmit(event.username,event.password)
+        }
+    }
+    
+    const onSubmit = async (username,password)=>{
+
         const {data} = await axios.post(
             `${baseUrl}/api/usuarios/login`,
             {
-                username: event.username,
-                password: event.password
+                username: username,
+                password: password
             },
             {
                 headers:{
@@ -32,8 +55,8 @@ function Login() {
             }
         )
 
-        console.log("respuesta del back del login")
-        console.log(data)
+        //console.log("respuesta del back del login")
+        //console.log(data)
 
         
         if (data.username != ''){
@@ -53,19 +76,20 @@ function Login() {
                 <div className={Styles.underline}></div>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(fieldValidation)}>
                 <div className={Styles.inputs}>
-                    <div className={Styles.input}>
+
+                    <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
                         <img src={user_icon} alt="" width={30}/>
-                        <input {...register("username")} type="text" placeholder="Nombre de usuario"/>
+                        <input {...register("username")} type="text" placeholder="Nombre de usuario" onChange={handleInputChange}/>
                     </div>
 
-                    <div className={Styles.input}>
+                    <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
                         <img src={pass_icon} alt="" width={30}/>
-                        <input {...register("password")} type="password" placeholder="Contraseña"/>
+                        <input {...register("password")} type="password" placeholder="Contraseña" onChange={handleInputChange}/>
                     </div>
                 </div>
-
+                
                 <div className={Styles.buttons}>
                     <button type="submit" className={Styles.buttonSubmit}>Ingresar</button>
 

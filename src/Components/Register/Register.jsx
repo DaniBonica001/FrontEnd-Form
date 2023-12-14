@@ -4,14 +4,15 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 import Styles from "./Register.module.css";
-import tarjeta_icon from "../../assets/identificacion.png"
-import email_icon from "../../assets/correo.png"
+import tarjeta_icon from "../../assets/identificacion.png";
+import email_icon from "../../assets/correo.png";
 import user_icon from "../../assets/usuario.png";
 import pass_icon from "../../assets/bloquear.png";
 
 const baseUrl = import.meta.env.VITE_CONNECCTION_STRING;
 
 function Register() {
+  const [error, setError] = useState(false);
   const [tipoIdValue, setTipoIdValue] = useState();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -24,6 +25,25 @@ function Register() {
       password: "",
     },
   });
+
+  function handleError() {
+    setError((error) => !error);
+  }
+
+  const handleInputChange = () => {
+    // Elimina la clase de error cuando el usuario comienza a escribir
+    if (error) {
+      setError(false);
+    }
+  };
+
+  const fieldValidation = (event) => {
+    if (event.name == "" || event.lastname == "" || event.idNumber == "" || event.email=="" || event.tipoId=="" || event.username=="" || event.password=="") {
+      handleError();
+    } else {
+      onSubmit(event);
+    }
+  };
 
   const onSubmit = async (event) => {
     const { data } = await axios.post(
@@ -44,11 +64,8 @@ function Register() {
       }
     );
 
-
-    console.log("respuesta del back del registro")
-    console.log(data)
-
-    
+    console.log("respuesta del back del registro");
+    console.log(data);
   };
 
   return (
@@ -58,43 +75,47 @@ function Register() {
         <div className={Styles.underline}></div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(fieldValidation)}>
         <div className={Styles.inputs}>
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
-            <input {...register("name")} type="text" placeholder="Nombre" />
+            <input {...register("name")} type="text" placeholder="Nombre" onChange={handleInputChange}/>
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
             <input
               {...register("lastname")}
               type="text"
-              placeholder="Apellido"
+              placeholder="Apellido" onChange={handleInputChange}
             />
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={tarjeta_icon} alt="" width={30} />
             <input
               {...register("idNumber")}
               type="text"
-              placeholder="Numero de identificacion"
+              placeholder="Numero de identificacion" onChange={handleInputChange}
             />
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={email_icon} alt="" width={30} />
-            <input {...register("email")} type="email" placeholder="Email" />
+            <input {...register("email")} type="email" placeholder="Email" onChange={handleInputChange}/>
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={tarjeta_icon} alt="" width={30} />
             <select
               name="tipoId"
               id="tipoId"
-              onChange={(event) => setTipoIdValue(event.target.value)}
-              {...register("tipoId")} className={Styles.customSelect}
+              onChange={(event) => {
+                setTipoIdValue(event.target.value);
+                handleInputChange;
+              }}
+              {...register("tipoId")}
+              className={Styles.customSelect}
             >
               <option value="CC">Cedula de ciudadania</option>
               <option value="CE">Cedula de extranjeria</option>
@@ -103,21 +124,21 @@ function Register() {
             </select>
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
             <input
               {...register("username")}
               type="text"
-              placeholder="Nombre de usuario"
+              placeholder="Nombre de usuario" onChange={handleInputChange}
             />
           </div>
 
-          <div className={Styles.input}>
+          <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={pass_icon} alt="" width={30} />
             <input
               {...register("password")}
               type="password"
-              placeholder="Contraseña"
+              placeholder="Contraseña" onChange={handleInputChange}
             />
           </div>
         </div>

@@ -63,6 +63,12 @@
     font-size: 19px;
 }
 
+.inputError{
+    border: 1px;
+    border-color: crimson;
+    background-color: rgb(246, 187, 187);
+}
+
 .customSelect {
     height: 50px;
     width: 350px;
