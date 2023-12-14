@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 import Styles from "./Register.module.css";
+import tarjeta_icon from "../../assets/identificacion.png"
+import email_icon from "../../assets/correo.png"
 import user_icon from "../../assets/usuario.png";
 import pass_icon from "../../assets/bloquear.png";
 
@@ -41,10 +44,11 @@ function Register() {
       }
     );
 
-    if (data.Username != "") {
-      console.log("Login successfull");
-      //navigation("/register")
-    }
+
+    console.log("respuesta del back del registro")
+    console.log(data)
+
+    
   };
 
   return (
@@ -71,7 +75,7 @@ function Register() {
           </div>
 
           <div className={Styles.input}>
-            <img src={user_icon} alt="" width={30} />
+            <img src={tarjeta_icon} alt="" width={30} />
             <input
               {...register("idNumber")}
               type="text"
@@ -80,17 +84,17 @@ function Register() {
           </div>
 
           <div className={Styles.input}>
-            <img src={user_icon} alt="" width={30} />
+            <img src={email_icon} alt="" width={30} />
             <input {...register("email")} type="email" placeholder="Email" />
           </div>
 
           <div className={Styles.input}>
-            <img src={user_icon} alt="" width={30} />
+            <img src={tarjeta_icon} alt="" width={30} />
             <select
               name="tipoId"
               id="tipoId"
               onChange={(event) => setTipoIdValue(event.target.value)}
-              {...register("tipoId")}
+              {...register("tipoId")} className={Styles.customSelect}
             >
               <option value="CC">Cedula de ciudadania</option>
               <option value="CE">Cedula de extranjeria</option>
@@ -119,7 +123,7 @@ function Register() {
         </div>
 
         <div className={Styles.buttons}>
-          <Link to={"/"}>
+          <Link to={"/"} className={Styles.noUnderline}>
             <button type="submit" className={Styles.buttonGray}>
               Ingresar
             </button>

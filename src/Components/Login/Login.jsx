@@ -35,6 +35,9 @@ function Login() {
 
         if (data.Username != ""){
             console.log("Login successfull")
+            alert("El usuario ha sido encontrado en la base de datos exitosamente")
+        }else{
+            alert("El usuario no ha sido encontrado en la base de datos")
         }
     }
 
@@ -61,7 +64,7 @@ function Login() {
                 <div className={Styles.buttons}>
                     <button type="submit" className={Styles.buttonSubmit}>Ingresar</button>
 
-                    <Link to={"/register"}>
+                    <Link to={"/register"} className={Styles.noUnderline}>
                     <button className={Styles.buttonGray}>Registrar</button>
                     </Link>
                    
