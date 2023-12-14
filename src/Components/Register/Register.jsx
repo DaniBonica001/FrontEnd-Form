@@ -9,7 +9,7 @@ import email_icon from "../../assets/correo.png"
 import user_icon from "../../assets/usuario.png";
 import pass_icon from "../../assets/bloquear.png";
 
-const baseUrl = "http://localhost:7841";
+const baseUrl = process.env.CONNECCTION_STRING;
 
 function Register() {
   const [tipoIdValue, setTipoIdValue] = useState();
