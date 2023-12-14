@@ -6,11 +6,11 @@ import Styles from './Login.module.css'
 import user_icon from '../../assets/usuario.png'
 import pass_icon from '../../assets/bloquear.png'
 
-const baseUrl = process.env.CONNECCTION_STRING;
+const baseUrl = import.meta.env.VITE_CONNECCTION_STRING;
 
 function Login() {
 
-    const {register, handleSubmit} = useForm({
+    const {register, handleSubmit,reset} = useForm({
         defaultValues:{
             username:"",
             password:""
@@ -32,11 +32,17 @@ function Login() {
             }
         )
 
-        if (data.Username != ""){
+        console.log("respuesta del back del login")
+        console.log(data)
+
+        
+        if (data.username != ''){
             console.log("Login successfull")
             alert("El usuario ha sido encontrado en la base de datos exitosamente")
-        }else{
+            reset()
+        }else {
             alert("El usuario no ha sido encontrado en la base de datos")
+            reset()
         }
     }
 
