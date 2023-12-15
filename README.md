@@ -47,7 +47,7 @@ This is a simple authentication app built using React, Vite, and React Hook Form
    npm run build
 
 ## Deployment 🌐
-The frontend is deployed on Vercel. Visit this Link to access the live application.
+The frontend is deployed on Vercel, [visit the link](https://front-end-form-omega.vercel.app/)
 
 ## Usage
 1. **Login:**
