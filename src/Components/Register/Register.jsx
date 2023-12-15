@@ -13,16 +13,16 @@ const baseUrl = import.meta.env.VITE_CONNECCTION_STRING;
 
 function Register() {
   const [error, setError] = useState(false);
-  const [tipoIdValue, setTipoIdValue] = useState();
+
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      name: "",
-      lastname: "",
-      idNumber: "",
-      email: "",
-      tipoId: "",
-      username: "",
-      password: "",
+      Nombre: "",
+      Apellido: "",
+      NumeroIdentificacion: "",
+      Email: "",
+      TipoIdentificacion: "",
+      Usuario1: "",
+      Pass: "",
     },
   });
 
@@ -38,24 +38,35 @@ function Register() {
   };
 
   const fieldValidation = (event) => {
-    if (event.name == "" || event.lastname == "" || event.idNumber == "" || event.email=="" || event.tipoId=="" || event.username=="" || event.password=="") {
+    if (
+      event.Nombre == "" ||
+      event.Apellido == "" ||
+      event.NumeroIdentificacion == "" ||
+      event.Email == "" ||
+      event.TipoIdentificacion == "" ||
+      event.Usuario1 == "" ||
+      event.Pass == ""
+    ) {
       handleError();
-    } else {
-      onSubmit(event);
+    }else{
+      onsubmit(event)
     }
   };
 
   const onSubmit = async (event) => {
+    console.log("evento");
+    console.log(event);
+
     const { data } = await axios.post(
       `${baseUrl}/api/personas/register`,
       {
-        name: event.name,
-        lastname: event.lastname,
-        idNumber: event.idNumber,
-        email: event.email,
-        tipoId: tipoIdValue,
-        username: event.username,
-        password: event.password,
+        Nombre: event.Nombre,
+        Apellido: event.Apellido,
+        NumeroIdentificacion: event.NumeroIdentificacion,
+        Email: event.Email,
+        TipoIdentificacion: event.TipoIdentificacion,
+        Usuario1: event.Usuario1,
+        Pass: event.Pass,
       },
       {
         headers: {
@@ -66,6 +77,12 @@ function Register() {
 
     console.log("respuesta del back del registro");
     console.log(data);
+
+    if (data == "CREATED") {
+      alert("Usuario creado correctamente");
+    } else {
+      alert("Error al crear el usuario");
+    }
   };
 
   return (
@@ -79,42 +96,36 @@ function Register() {
         <div className={Styles.inputs}>
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
-            <input {...register("name")} type="text" placeholder="Nombre" onChange={handleInputChange}/>
+            <input {...register("Nombre")} type="text" placeholder="Nombre" />
           </div>
 
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
             <input
-              {...register("lastname")}
+              {...register("Apellido")}
               type="text"
-              placeholder="Apellido" onChange={handleInputChange}
+              placeholder="Apellido"
             />
           </div>
 
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={tarjeta_icon} alt="" width={30} />
             <input
-              {...register("idNumber")}
+              {...register("NumeroIdentificacion")}
               type="text"
-              placeholder="Numero de identificacion" onChange={handleInputChange}
+              placeholder="Numero de identificacion"
             />
           </div>
 
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={email_icon} alt="" width={30} />
-            <input {...register("email")} type="email" placeholder="Email" onChange={handleInputChange}/>
+            <input {...register("Email")} type="email" placeholder="Email" />
           </div>
 
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={tarjeta_icon} alt="" width={30} />
             <select
-              name="tipoId"
-              id="tipoId"
-              onChange={(event) => {
-                setTipoIdValue(event.target.value);
-                handleInputChange;
-              }}
-              {...register("tipoId")}
+              {...register("TipoIdentificacion")}
               className={Styles.customSelect}
             >
               <option value="CC">Cedula de ciudadania</option>
@@ -127,30 +138,30 @@ function Register() {
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={user_icon} alt="" width={30} />
             <input
-              {...register("username")}
+              {...register("Usuario1")}
               type="text"
-              placeholder="Nombre de usuario" onChange={handleInputChange}
+              placeholder="Nombre de usuario"
             />
           </div>
 
           <div className={[Styles.input, `${error? Styles.inputError: ""}`].join(' ')}>
             <img src={pass_icon} alt="" width={30} />
             <input
-              {...register("password")}
+              {...register("Pass")}
               type="password"
-              placeholder="Contraseña" onChange={handleInputChange}
+              placeholder="Contraseña"
             />
           </div>
         </div>
 
         <div className={Styles.buttons}>
           <Link to={"/"} className={Styles.noUnderline}>
-            <button type="submit" className={Styles.buttonGray}>
-              Ingresar
-            </button>
+            <button className={Styles.buttonGray}>Ingresar</button>
           </Link>
 
-          <button className={Styles.buttonSubmit}>Registrar</button>
+          <button className={Styles.buttonSubmit} type="submit">
+            Registrar
+          </button>
         </div>
       </form>
     </div>
